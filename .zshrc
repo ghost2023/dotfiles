@@ -6,8 +6,10 @@ export ZSH="$HOME/.oh-my-zsh"
 export CHROME_EXECUTABLE=/usr/bin/google-chrome-stable
 export JAVA_HOME="/usr"
 export ANDROID_HOME=$HOME/Android/Sdk
-export PATH="$PATH:$HOME/.yarn/bin"
 export CLASSPATH=/usr/local/lib/postgresql-42.7.1.jar:$CLASSPATH
+export GOPATH=$HOME/go
+export PATH="$PATH:$HOME/.yarn/bin:$HOME/projects/automations/scripts:$GOPATH/bin"
+export EDITOR=/usr/bin/nvim 
 
 precmd() {
     precmd() {
@@ -15,7 +17,9 @@ precmd() {
     }
 }
 
-# ZSH_THEME="bira"
+# amuse
+# gnzh
+# ZSH_THEME="random"
 
 # aliases
 alias v=nvim
@@ -31,53 +35,23 @@ alias wlc="wl-copy"
 alias wlp="wl-paste"
 alias lg=lazygit
 alias qrg="qrencode -t ansiutf8 -m 2"
+alias cd=z
+alias c=clear
+alias b=bpytop
 
 plugins=(
   tmux
   git
   zsh-syntax-highlighting
   zsh-autosuggestions  
+  colored-man-pages
+  aliases
 ) 
-  
+
 source $ZSH/oh-my-zsh.sh
- 
-# # The next line updates PATH for the Google Cloud SDK.
-# if [ -f '/home/ghost/Downloads/google-cloud-sdk/path.zsh.inc' ]; then . '/home/ghost/Downloads/google-cloud-sdk/path.zsh.inc'; fi
-
-# # The next line enables shell command completion for gcloud.
-# if [ -f '/home/ghost/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then . '/home/ghost/Downloads/google-cloud-sdk/completion.zsh.inc'; fi
-
-
-declare -A pomo_options
-pomo_options["work"]="45"
-pomo_options["break"]="10"
-
-pomodoro () {
-  if [ -n "$1" -a -n "${pomo_options["$1"]}" ]; then
-  val=$1
-  echo $val | lolcat
-  timer ${pomo_options["$val"]}m
-  spd-say "'$val' session done"
-  fi
-}
-
-alias wo="pomodoro 'work'"
-alias br="pomodoro 'break'"
-
-op () {
-  find ~/projects -maxdepth 3 -path '*' -type d -readable -not -path '*/node_modules*' -not -path '*/\.*' -print 2>/dev/null | fzf --query "$1" | read -r dir; 
-  cd "$dir";
-}
 
 opv () {
-  find ~/projects -maxdepth 2 -path '*' -type d -readable -not -path '*/node_modules*' -not -path '*/\.*' -print 2>/dev/null | fzf --query "$1" | read -r dir; 
-  cd "$dir";
-  nvim
-}
-
-cg () {
-  grep --exclude-dir={node_modules,.git,.next} -RP "$2" "$1" | awk -F: '{printf "\033[1;32m%s\033[0m", $1":\t";  for(i=2;i<=NF;i++){ if( i!= 2) { printf ":"};printf "%s", $i} printf "\n"}' \
-  | fzf --ansi | grep -Po '(?<=\t).*' | wl-copy
+  fd --maxdepth 2 --base-directory ~/projects -t d -a | fzf --query "$1" | read -r dir && cd "$dir" && nvim
 }
 
 eval "$(zoxide init zsh)"
@@ -100,7 +74,7 @@ else
 fi
 
 ZSH_THEME_RVM_PROMPT_OPTIONS="i v g"
-
+setopt PROMPT_SUBST
 PROMPT=" ${current_dir}${vcs_branch}${venv_prompt}
 %b%F{green}❯%f "
 RPROMPT="%B${return_code}%b"
@@ -119,3 +93,19 @@ ZSH_THEME_VIRTUAL_ENV_PROMPT_PREFIX="%{$fg[green]%}‹"
 ZSH_THEME_VIRTUAL_ENV_PROMPT_SUFFIX="› %{$reset_color%}"
 ZSH_THEME_VIRTUALENV_PREFIX="$ZSH_THEME_VIRTUAL_ENV_PROMPT_PREFIX"
 ZSH_THEME_VIRTUALENV_SUFFIX="$ZSH_THEME_VIRTUAL_ENV_PROMPT_SUFFIX"
+
+_complete_alias() {
+    [[ -n $PREFIX ]] && compadd -- ${(M)${(k)galiases}:#$PREFIX*}
+    return 1
+}
+
+zstyle ':completion:*' menu select completer _complete_alias _complete _ignored
+
+eval "$(fzf --zsh)"
+
+fpath=(~/.stripe $fpath)
+autoload -Uz compinit && compinit -i
+
+# Created by `pipx` on 2024-06-09 23:58:53
+export PATH="$PATH:/home/ghost/.local/bin"
+if [ -f "/home/ghost/.config/fabric/fabric-bootstrap.inc" ]; then . "/home/ghost/.config/fabric/fabric-bootstrap.inc"; fi
