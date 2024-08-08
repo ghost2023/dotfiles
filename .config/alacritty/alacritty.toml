@@ -8,15 +8,17 @@ startup_mode="Fullscreen"
 
 [keyboard]
 bindings = [
-{ key = "F11", action = "ToggleFullscreen"},
-{key = 'N', mods="Shift|Control", action="CreateNewWindow"},
+  { key = "F11", action = "ToggleFullscreen" },
+  { key = 'N', mods = "Shift|Control", action = "CreateNewWindow" },
+  { key = 'C', mods = "ALT", action = "Copy" },
+  { key = 'P', mods = "ALT", action = "Paste" },
 ]
 
 [font]
 size=13
 
 [font.normal]
-family = "JetBrainsMono Nerd Font"
+family = "Source Code Pro"
 style = "Regular"
 
 [colors.primary]
