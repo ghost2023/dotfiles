@@ -3,6 +3,9 @@
 
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
+export GTK_IM_MODULE=ibus
+export QT_IM_MODULE=ibus
+export XMODIFIERS=@im=ibus
 export CHROME_EXECUTABLE=/usr/bin/google-chrome-stable
 export JAVA_HOME="/usr"
 export ANDROID_HOME=$HOME/Android/Sdk
@@ -39,6 +42,11 @@ alias cd=z
 alias c=clear
 alias b=bpytop
 
+opv () {
+  fd --maxdepth 2 --base-directory ~/projects -t d -a | fzf --query "$1" | read -r dir && cd "$dir" && nvim
+}
+
+
 plugins=(
   tmux
   git
@@ -46,19 +54,11 @@ plugins=(
   zsh-autosuggestions  
   colored-man-pages
   aliases
+  mise
 ) 
 
 source $ZSH/oh-my-zsh.sh
 
-opv () {
-  fd --maxdepth 2 --base-directory ~/projects -t d -a | fzf --query "$1" | read -r dir && cd "$dir" && nvim
-}
-
-eval "$(zoxide init zsh)"
-# eval "$(starship init zsh)"
-
-export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
 
 local return_code="%(?..%{$fg[red]%}%? ↵%{$reset_color%})"
 local user_host="%(!.%{$fg[red]%}.%{$fg[green]%})%n%{$reset_color%} "
@@ -67,11 +67,6 @@ local current_dir="%{$fg[blue]%}%~ %{$reset_color%}"
 
 local vcs_branch='$(git_prompt_info)$(hg_prompt_info)'
 local venv_prompt='$(virtualenv_prompt_info)'
-if [[ "${plugins[@]}" =~ 'kube-ps1' ]]; then
-    local kube_prompt='$(kube_ps1)'
-else
-    local kube_prompt=''
-fi
 
 ZSH_THEME_RVM_PROMPT_OPTIONS="i v g"
 setopt PROMPT_SUBST
@@ -94,17 +89,21 @@ ZSH_THEME_VIRTUAL_ENV_PROMPT_SUFFIX="› %{$reset_color%}"
 ZSH_THEME_VIRTUALENV_PREFIX="$ZSH_THEME_VIRTUAL_ENV_PROMPT_PREFIX"
 ZSH_THEME_VIRTUALENV_SUFFIX="$ZSH_THEME_VIRTUAL_ENV_PROMPT_SUFFIX"
 
-_complete_alias() {
-    [[ -n $PREFIX ]] && compadd -- ${(M)${(k)galiases}:#$PREFIX*}
-    return 1
-}
-
-zstyle ':completion:*' menu select completer _complete_alias _complete _ignored
-
 eval "$(fzf --zsh)"
+eval "$(zoxide init zsh)"
+# eval "$(starship init zsh)"
 
-fpath=(~/.stripe $fpath)
-autoload -Uz compinit && compinit -i
+# Options
+setopt hist_ignore_space
+setopt hist_ignore_all_dups
+setopt hist_ignore_dups
+setopt hist_save_no_dups
+setopt hist_find_no_dups
+
+zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
+
+bindkey '^p' history-search-backward
+bindkey '^n' history-search-forward
 
 # Created by `pipx` on 2024-06-09 23:58:53
 export PATH="$PATH:/home/ghost/.local/bin"
