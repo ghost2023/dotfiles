@@ -19,7 +19,7 @@ precmd() {
         echo
     }
 }
-
+USE_POWERLINE="true"
 # amuse
 # gnzh
 # ZSH_THEME="random"
@@ -55,6 +55,7 @@ plugins=(
   colored-man-pages
   aliases
   mise
+  zsh-vi-mode
 ) 
 
 source $ZSH/oh-my-zsh.sh
@@ -91,7 +92,6 @@ ZSH_THEME_VIRTUALENV_SUFFIX="$ZSH_THEME_VIRTUAL_ENV_PROMPT_SUFFIX"
 
 eval "$(fzf --zsh)"
 eval "$(zoxide init zsh)"
-# eval "$(starship init zsh)"
 
 # Options
 setopt hist_ignore_space
@@ -104,6 +104,15 @@ zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 
 bindkey '^p' history-search-backward
 bindkey '^n' history-search-forward
+
+# Append a command directly
+zvm_after_init_commands+=('eval "$(fzf --zsh)"')
+
+VI_MODE_SET_CURSOR=true
+VI_MODE_CURSOR_INSERT=6
+ZVM_VI_INSERT_ESCAPE_BINDKEY=jk
+bindkey -v
+export KEYTIMEOUT=1
 
 # Created by `pipx` on 2024-06-09 23:58:53
 export PATH="$PATH:/home/ghost/.local/bin"
