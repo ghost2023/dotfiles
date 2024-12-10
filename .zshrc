@@ -3,16 +3,15 @@
 
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
-export GTK_IM_MODULE=ibus
-export QT_IM_MODULE=ibus
-export XMODIFIERS=@im=ibus
 export CHROME_EXECUTABLE=/usr/bin/google-chrome-stable
 export JAVA_HOME="/usr"
 export ANDROID_HOME=$HOME/Android/Sdk
 export CLASSPATH=/usr/local/lib/postgresql-42.7.1.jar:$CLASSPATH
 export GOPATH=$HOME/go
-export PATH="$PATH:$HOME/.yarn/bin:$HOME/projects/automations/scripts:$GOPATH/bin"
-export EDITOR=/usr/bin/nvim 
+export PATH="/home/ghost/.config/herd-lite/bin:$PATH:$HOME/.yarn/bin:$HOME/projects/automations/scripts:$GOPATH/bin:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools:/home/ghost/.local/share/mise/installs/node/22.5.1/bin"
+
+export EDITOR="/usr/bin/nvim"
+export KITTY_ENABLE_WAYLAND=0
 
 precmd() {
     precmd() {
@@ -42,6 +41,15 @@ alias cd=z
 alias c=clear
 alias b=bpytop
 
+function yz() {
+	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
+	yazi "$@" --cwd-file="$tmp"
+	if cwd="$(command cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
+		builtin cd -- "$cwd"
+	fi
+	rm -f -- "$tmp"
+}
+
 opv () {
   fd --maxdepth 2 --base-directory ~/projects -t d -a | fzf --query "$1" | read -r dir && cd "$dir" && nvim
 }
@@ -54,7 +62,6 @@ plugins=(
   zsh-autosuggestions  
   colored-man-pages
   aliases
-  mise
   zsh-vi-mode
 ) 
 
@@ -106,6 +113,11 @@ bindkey '^p' history-search-backward
 bindkey '^n' history-search-forward
 
 # Append a command directly
+zvm_vi_yank () {
+	zvm_yank
+	printf %s "${CUTBUFFER}" |  wl-copy -n
+	zvm_exit_visual_mode
+}
 zvm_after_init_commands+=('eval "$(fzf --zsh)"')
 
 VI_MODE_SET_CURSOR=true
@@ -117,3 +129,17 @@ export KEYTIMEOUT=1
 # Created by `pipx` on 2024-06-09 23:58:53
 export PATH="$PATH:/home/ghost/.local/bin"
 if [ -f "/home/ghost/.config/fabric/fabric-bootstrap.inc" ]; then . "/home/ghost/.config/fabric/fabric-bootstrap.inc"; fi
+
+## [Completion]
+## Completion scripts setup. Remove the following line to uninstall
+# [[ -f /home/ghost/.dart-cli-completion/zsh-config.zsh ]] && . /home/ghost/.dart-cli-completion/zsh-config.zsh || true
+## [/Completion]
+
+eval "$(mise activate zsh)"
+
+alias l="exa --icons -1"
+
+export PHP_INI_SCAN_DIR="/home/ghost/.config/herd-lite/bin:$PHP_INI_SCAN_DIR"
+. "/home/ghost/.deno/env"
+
+source /home/ghost/.daytona.completion_script.zsh
