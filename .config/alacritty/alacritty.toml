@@ -15,10 +15,10 @@ bindings = [
 ]
 
 [font]
-size=13
+size=11
 
 [font.normal]
-family = "Source Code Pro"
+family = "GeistMono Nerd Font"
 style = "Regular"
 
 [colors.primary]
