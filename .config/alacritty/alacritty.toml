@@ -15,16 +15,15 @@ bindings = [
 ]
 
 [font]
-size=11
+size=10
 
 [font.normal]
 family = "GeistMono Nerd Font"
 style = "Regular"
 
 [colors.primary]
-background = "0x09090f"
+background = "0x121212"
 foreground = "0xD9E0EE"
-# background = "0x191c1d"
 
 [colors.cursor]
 text = "0x1E1D2F"

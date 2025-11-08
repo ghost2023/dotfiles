@@ -1,17 +1,38 @@
-# If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
-export CHROME_EXECUTABLE=/usr/bin/google-chrome-stable
-export JAVA_HOME="/usr"
-export ANDROID_HOME=$HOME/Android/Sdk
-export CLASSPATH=/usr/local/lib/postgresql-42.7.1.jar:$CLASSPATH
-export GOPATH=$HOME/go
-export PATH="/home/ghost/.config/herd-lite/bin:$PATH:$HOME/.yarn/bin:$HOME/projects/automations/scripts:$GOPATH/bin:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools:/home/ghost/.local/share/mise/installs/node/22.5.1/bin"
 
-export EDITOR="/usr/bin/nvim"
-export KITTY_ENABLE_WAYLAND=0
+export CHROME_EXECUTABLE=/usr/bin/google-chrome-stable
+
+export JAVA_HOME="/usr"
+
+export ANDROID_HOME=$HOME/Android/Sdk
+
+export GOPATH=$HOME/go
+
+##
+## PATH
+##
+export PATH="/home/ghost/.config/herd-lite/bin:$PATH:$HOME/.yarn/bin:$HOME/projects/automations/scripts:$GOPATH/bin:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools:/home/ghost/.local/share/mise/installs/node/22.5.1/bin:$HOME/.cargo/env:$HOME/.local/bin:$HOME/projects/scripts/global:$HOME/.local/share/bob/nvim-bin:$HOME/.dotnet/tools"
+export PATH="$HOME/.nix-profile/bin:$PATH"
+
+# opencode
+export PATH="$HOME/.opencode/bin/:$PATH"
+export PATH=/home/ghost/.opencode/bin:$PATH
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+
+export EDITOR="/home/ghost/.local/share/bob/nvim-bin/nvim"
+
+export FZF_DEFAULT_OPTS="--preview 'bat --color=always --style=numbers --line-range=:500 {}' --walker-skip .git,node_modules,.next,.venv,.env --wrap "
+export FZF_CTRL_T_OPTS="
+  --walker-skip .git,node_modules,.next
+  --preview 'bat -n --color=always {}'
+  --bind 'ctrl-/:change-preview-window(down|hidden|)'"
+export FZF_COMPLETION_DIR_OPTS='--walker dir,follow'
+export FZF_COMPLETION_PATH_OPTS='--walker file,dir,follow,hidden'
 
 precmd() {
     precmd() {
@@ -127,7 +148,6 @@ bindkey -v
 export KEYTIMEOUT=1
 
 # Created by `pipx` on 2024-06-09 23:58:53
-export PATH="$PATH:/home/ghost/.local/bin"
 if [ -f "/home/ghost/.config/fabric/fabric-bootstrap.inc" ]; then . "/home/ghost/.config/fabric/fabric-bootstrap.inc"; fi
 
 ## [Completion]
@@ -140,6 +160,24 @@ eval "$(mise activate zsh)"
 alias l="exa --icons -1"
 
 export PHP_INI_SCAN_DIR="/home/ghost/.config/herd-lite/bin:$PHP_INI_SCAN_DIR"
-. "/home/ghost/.deno/env"
 
-source /home/ghost/.daytona.completion_script.zsh
+# source /home/ghost/.daytona.completion_script.zsh
+
+# pnpm
+export PNPM_HOME="/home/ghost/.local/share/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end
+export PNPM_HOME="/home/ghost/.local/share/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+
+
+
+# bun completions
+[ -s "/home/ghost/.bun/_bun" ] && source "/home/ghost/.bun/_bun"
+
