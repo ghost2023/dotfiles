@@ -1,0 +1,36 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "instructions": [
+    "GEMINI.md",
+    "README.md"
+  ],
+  "keybinds": {
+    "input_newline": "alt+enter"
+  },
+  "lsp": {
+    "typescript": {
+      "command": [
+        "tsgo",
+        "--lsp",
+        "-stdio"
+      ]
+    }
+  },
+  "provider": {
+    "ollama": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "Ollama (local)",
+      "options": {
+        "baseURL": "http://localhost:11434/v1"
+      },
+      "models": {
+        "qwen3:0.6b": {
+          "name": "qwen3:0.6b"
+        },
+        "qwen3-vl:2b": {
+          "name": "qwen3-vl:2b"
+        }
+      }
+    }
+  }
+}

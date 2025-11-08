@@ -1,0 +1,48 @@
+{
+  "$schema": "https://raw.githubusercontent.com/google-gemini/gemini-cli/main/schemas/settings.schema.json",
+  "model": {
+    "name": "gemini-2.5-pro"
+  },
+  "mcpServers": {
+    "shadcn": {
+      "command": "npx",
+      "args": [
+        "shadcn@latest",
+        "mcp"
+      ]
+    },
+    "context7": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@upstash/context7-mcp",
+        "--api-key",
+        "ctx7sk"
+      ]
+    }
+  },
+  "security": {
+    "auth": {
+      "selectedType": "oauth-personal"
+    }
+  },
+  "ui": {
+    "hideWindowTitle": true,
+    "hideBanner": true,
+    "showLineNumbers": true,
+    "useFullWidth": true,
+    "theme": "Ayu"
+  },
+  "general": {
+    "checkpointing": {
+      "enabled": true
+    },
+    "enablePromptCompletion": true,
+    "preferredEditor": "neovim"
+  },
+  "context": {
+    "fileFiltering": {
+      "respectGitIgnore": true
+    }
+  }
+}
