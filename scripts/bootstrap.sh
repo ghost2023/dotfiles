@@ -16,9 +16,6 @@ cd ..
 rm -rf paru
 echo "paru installed successfully."
 
-echo "Setting zsh as the default shell. You may need to log out and back in for this to take effect."
-chsh -s $(which zsh)
-
 echo "Installing core packages via paru (this may take a while)..."
 paru -S --needed \
   ripgrep\
@@ -34,7 +31,7 @@ paru -S --needed \
   stow\
   mise\
   xh\
-  zen-browser\
+  zen-browser-bin\
   telegram-desktop\
   docker\
   scrcpy\
@@ -56,13 +53,6 @@ echo "Oh My Zsh installed."
 echo "Adding user to kvm group for Android emulator support..."
 sudo usermod -aG kvm $USER
 echo "User added to kvm group."
-
-echo "Setting up Android SDK environment variables for future sessions..."
-sudo tee /etc/profile.d/android.sh > /dev/null <<'EOF'
-export ANDROID_SDK_ROOT=/opt/android-sdk
-export PATH=$PATH:$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$ANDROID_SDK_ROOT/emulator:$ANDROID_SDK_ROOT/platform-tools
-EOF
-echo "Android SDK environment variables configured."
 
 # The android-sdk package installs to /opt/android-sdk, which is owned by root.
 # Change ownership to the current user to allow SDK management.
@@ -101,11 +91,14 @@ echo "uv installed."
 
 echo "Installing global NPM tools via mise..."
 mise use -g npm:@antfu/ni
-mise use -g npm:@typescript/native
+mise use -g npm:@typescript/native-preview
 mise use -g npm:@google/gemini-cli
 mise use -g npm:eas-cli
 mise use -g npm:opencode-ai
 echo "Global NPM tools installed."
+
+echo "Setting zsh as the default shell. You may need to log out and back in for this to take effect."
+chsh -s $(which zsh)
 
 echo "Stowing dotfiles into place..."
 stow --adopt .
