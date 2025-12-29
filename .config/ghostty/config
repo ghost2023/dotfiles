@@ -74,8 +74,7 @@ keybind = super+ctrl+left_bracket=unbind
 keybind = ctrl+shift+i=unbind
 keybind = alt+six=unbind
 keybind = alt+seven=unbind
-
-
+keybind = ctrl+shift+p=ignore
 
 # keybind = ctrl+comma=open_config
 # keybind = shift+insert=paste_from_selection
