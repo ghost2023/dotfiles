@@ -9,10 +9,12 @@ export CHROME_EXECUTABLE=/usr/bin/google-chrome-stable
 
 export JAVA_HOME="/usr"
 
-export ANDROID_HOME=$HOME/Android/Sdk
+export ANDROID_HOME=/opt/android-sdk/
 
 export GOPATH=$HOME/go
 
+export QT_QPA_PLATFORM=xcb # Forces X11 mode for stability on Wayland
+export ANDROID_EMULATOR_USE_VULKAN=false # NVIDIA + Wayland Vulkan can be unstable; GLES is safer
 
 ##
 ## PATH
@@ -41,6 +43,8 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 export EDITOR="$HOME/.local/share/bob/nvim-bin/nvim"
 
 export STARSHIP_CONFIG="$HOME/.config/starship/config.toml"
+
+export GTK_USE_PORTAL=1
 
 # ========================
 # plugins
@@ -142,3 +146,25 @@ eval "$(fzf --zsh)"
 eval "$(zoxide init zsh)"
 eval "$(starship init zsh)"
 
+
+run_app() {
+  cd ./apps/pdv || exit
+  tmux new-session \;\
+  send-keys 'flutter run --debug -d linux --pid-file=/tmp/appdev.pid --dart-define-from-file=env-debug.json' Enter \;\
+  split-window -v \;\
+  send-keys 'cd ../ && npx -y nodemon -e dart -x "cat /tmp/appdev.pid | xargs -r kill -USR1"' Enter \;\
+  select-pane -t 0 \;
+}
+
+# bun completions
+[ -s "/home/ghost/.bun/_bun" ] && source "/home/ghost/.bun/_bun"
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/home/ghost/tmp/google-cloud-sdk/path.zsh.inc' ]; then . '/home/ghost/tmp/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/home/ghost/tmp/google-cloud-sdk/completion.zsh.inc' ]; then . '/home/ghost/tmp/google-cloud-sdk/completion.zsh.inc'; fi
+
+
+# Load Angular CLI autocompletion.
+source <(ng completion script)

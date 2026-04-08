@@ -25,17 +25,15 @@ gui:
     searchingActiveBorderColor:
       - cyan
       - bold
-
 git:
-  paging:
-    colorArg: always
-    pager: delta --dark --paging=never 
-
+  pagers:
+    - colorArg: always
+      pager: delta --dark --paging=never
 customCommands:
   - key: <c-y>
     description: Pick AI commit
     command: |
-      curl -s "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent?key=$MAIN_GEMINI_API_KEY" \
+      curl -s "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=$MAIN_GEMINI_API_KEY" \
        -H 'Content-Type: application/json' \
         -d "{
           \"contents\": [
@@ -58,7 +56,7 @@ customCommands:
         the change made.
 
         \`\`\`
-        $(git log -n 10 --pretty=format:'%h %s' | jq -Rs . | sed 's/^\"//;s/\"$//')
+        $(git log -n 10 --pretty=format:'%s' | jq -Rs . | sed 's/^\"//;s/\"$//')
         \`\`\`
 
         **Output Template**
@@ -77,14 +75,9 @@ customCommands:
 
         - Think about the impact of these changes on the project (e.g., bug fixes, new
         features, performance improvements, code refactoring, documentation updates).
-        It's critical to my career you abstract the changes to a higher level and not
-        just describe the code changes.
 
         - Generate commit messages that accurately describe these changes, ensuring they
-        are helpful to someone reading the project's history.
-
-        - Remember, a well-crafted commit message can significantly aid in the maintenance
-        and understanding of the project over time.
+        are helpful to someone reading the project's history. and each message should account for all the changes.
 
         - If multiple changes are present, make sure you capture them all in each commit
         message.

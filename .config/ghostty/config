@@ -1,10 +1,9 @@
 font-family = "GeistMono Nerd Font"
+font-family = "Noto Sans Ethiopic"
+adjust-cell-width = -15%
 font-style="Regular"
 fullscreen = true
-font-size = 9
-theme = alacritty
-keybind = alt+p=paste_from_clipboard
-window-padding-x=0
+font-size = 11
 window-padding-y=0
 freetype-load-flags = hinting, force-autohint, no-monochrome
 confirm-close-surface=false
